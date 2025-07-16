@@ -10,6 +10,7 @@ import lombok.Data;
  */
 @Data
 public class Result<T> {
+    // 测试是否能提交
     
     /**
      * 响应码
