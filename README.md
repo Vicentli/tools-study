@@ -1,85 +1,56 @@
-# Tools Study - Spring Boot 学习项目
+# Tools Study - Spring Boot学习项目
 
-这是一个基于 Spring Boot 3.2.0 的学习项目，包含了各种常用的工具类和功能模块。
+这是一个Spring Boot学习项目，集成了多种常用技术和工具类，适合学习和实践。
 
-## 项目结构
+## 🚀 技术栈
 
+- **后端框架**: Spring Boot 3.2.0
+- **数据库**: H2 (开发环境) / MySQL (生产环境)
+- **缓存**: Redis
+- **认证**: JWT (JSON Web Token)
+- **安全**: Spring Security
+- **ORM**: Spring Data JPA
+- **工具库**: Hutool、Apache Commons
+- **构建工具**: Maven
+- **Java版本**: 21
+
+## 📋 功能特性
+
+- ✅ JWT用户认证和授权
+- ✅ 用户注册和登录
+- ✅ Redis缓存操作
+- ✅ H2内存数据库
+- ✅ 统一响应格式
+- ✅ 跨域配置
+- ✅ 安全配置
+
+## 🛠️ 快速开始
+
+### 环境要求
+
+- JDK 21+
+- Maven 3.8+
+- Redis (可选，用于缓存功能)
+
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/你的用户名/tools-study.git
+cd tools-study
 ```
-src/
-├── main/
-│   ├── java/
-│   │   └── com/study/toolsstudy/
-│   │       ├── ToolsStudyApplication.java    # 主启动类
-│   │       ├── config/                       # 配置类
-│   │       │   └── RedisConfig.java         # Redis配置
-│   │       ├── controller/                   # 控制器
-│   │       │   └── RedisTestController.java # Redis测试控制器
-│   │       ├── service/                      # 服务层
-│   │       ├── repository/                   # 数据访问层
-│   │       ├── entity/                       # 实体类
-│   │       ├── utils/                        # 工具类
-│   │       │   └── RedisUtils.java          # Redis工具类
-│   │       └── common/                       # 通用类
-│   │           └── Result.java              # 统一响应结果
-│   └── resources/
-│       ├── application.yml                   # 主配置文件
-│       └── application-dev.yml              # 开发环境配置
-└── test/                                     # 测试目录
-```
-
-## 技术栈
-
-- **Spring Boot**: 3.2.0
-- **Java**: 17
-- **Maven**: 项目构建工具
-- **Redis**: 缓存数据库
-- **MySQL**: 关系型数据库
-- **JPA**: 数据持久化
-- **Lombok**: 简化代码
-- **Hutool**: 工具包
-- **JWT**: 身份认证
-
-## 主要功能
-
-### 1. Redis 工具类 (RedisUtils)
-提供了完整的 Redis 操作封装，包括：
-- 字符串操作 (set, get, incr, decr)
-- Hash 操作 (hset, hget, hmset, hmget)
-- List 操作 (lSet, lGet, lRemove)
-- Set 操作 (sSet, sGet, setRemove)
-- 通用操作 (expire, hasKey, del)
-
-### 2. 统一响应结果 (Result)
-标准化的 API 响应格式，包含：
-- 响应码
-- 响应消息
-- 响应数据
-- 时间戳
-
-### 3. Redis 测试接口
-提供了完整的 Redis 操作测试接口：
-- `POST /api/redis/set` - 设置缓存
-- `GET /api/redis/get/{key}` - 获取缓存
-- `DELETE /api/redis/del/{key}` - 删除缓存
-- `GET /api/redis/exists/{key}` - 检查key是否存在
-- `POST /api/redis/hset` - 设置Hash缓存
-- `GET /api/redis/hget/{key}/{field}` - 获取Hash缓存
-- `GET /api/redis/hgetall/{key}` - 获取所有Hash字段
-- `POST /api/redis/incr/{key}` - 递增
-- `POST /api/redis/decr/{key}` - 递减
-- `POST /api/redis/expire/{key}` - 设置过期时间
-- `GET /api/redis/ttl/{key}` - 获取过期时间
-
-## 快速开始
-
-### 1. 环境要求
-- JDK 17+
-- Maven 3.6+
-- Redis 6.0+
-- MySQL 8.0+
 
 ### 2. 配置数据库
-修改 `src/main/resources/application.yml` 中的数据库配置：
+
+#### 开发环境 (使用H2内存数据库)
+项目默认使用H2内存数据库，无需额外配置。
+
+#### 生产环境 (使用MySQL)
+1. 创建MySQL数据库
+```sql
+CREATE DATABASE tools_study CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+2. 修改 `application.yml` 中的数据库配置：
 ```yaml
 spring:
   datasource:
@@ -88,47 +59,147 @@ spring:
     password: your_password
 ```
 
-### 3. 配置Redis
-修改 Redis 配置：
+### 3. 配置Redis (可选)
+如果本地没有Redis，可以在 `application-dev.yml` 中禁用Redis功能。
+
+### 4. 运行项目
+
+```bash
+# 使用Maven运行
+mvn spring-boot:run
+
+# 或者打包后运行
+mvn clean package
+java -jar target/tools-study-1.0.0.jar
+```
+
+### 5. 访问应用
+
+- 应用地址: http://localhost:8080/api
+- H2控制台: http://localhost:8080/api/h2-console (开发环境)
+
+## 📚 API文档
+
+### 认证相关接口
+
+#### 用户注册
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "123456",
+  "email": "test@example.com",
+  "nickname": "测试用户"
+}
+```
+
+#### 用户登录
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "123456"
+}
+```
+
+#### 获取用户信息
+```http
+GET /api/auth/profile
+Authorization: Bearer your_jwt_token
+```
+
+#### 退出登录
+```http
+POST /api/auth/logout
+Authorization: Bearer your_jwt_token
+```
+
+### 测试接口
+
+#### Redis测试
+```http
+GET /api/redis/test
+```
+
+#### 通用测试
+```http
+GET /api/test/hello
+```
+
+## 🔧 配置说明
+
+### JWT配置
+在 `application.yml` 中配置JWT相关参数：
+```yaml
+app:
+  jwt:
+    secret: your-secret-key-here  # JWT密钥
+    expiration: 86400000          # Token过期时间(毫秒)
+```
+
+### Redis配置
 ```yaml
 spring:
   data:
     redis:
       host: localhost
       port: 6379
-      password: your_password
+      password: 
       database: 0
 ```
 
-### 4. 启动项目
-```bash
-# 编译项目
-mvn clean compile
+## 📁 项目结构
 
-# 运行项目
-mvn spring-boot:run
+```
+src/main/java/com/study/toolsstudy/
+├── common/          # 通用类
+│   └── Result.java  # 统一响应格式
+├── config/          # 配置类
+│   ├── RedisConfig.java
+│   └── SecurityConfig.java
+├── controller/      # 控制器
+│   ├── AuthController.java
+│   ├── RedisTestController.java
+│   └── TestController.java
+├── dto/            # 数据传输对象
+│   ├── AuthResponse.java
+│   ├── LoginRequest.java
+│   └── RegisterRequest.java
+├── entity/         # 实体类
+│   └── User.java
+├── repository/     # 数据访问层
+│   └── UserRepository.java
+├── service/        # 业务逻辑层
+│   └── AuthService.java
+├── utils/          # 工具类
+│   ├── JwtUtils.java
+│   └── RedisUtils.java
+└── ToolsStudyApplication.java
 ```
 
-### 5. 测试接口
-项目启动后，访问 `http://localhost:8080/api/redis/` 下的各个接口进行测试。
+## 🎯 学习要点
 
-## 开发计划
+1. **Spring Boot基础**: 项目配置、自动配置、依赖注入
+2. **Spring Security**: 安全配置、JWT认证、权限控制
+3. **Spring Data JPA**: 实体映射、数据访问、事务管理
+4. **Redis集成**: 缓存配置、数据操作
+5. **JWT实现**: Token生成、验证、解析
+6. **统一响应**: 异常处理、响应格式标准化
 
-- [ ] JWT 工具类
-- [ ] 文件上传工具类
-- [ ] 邮件发送工具类
-- [ ] 短信发送工具类
-- [ ] 定时任务工具类
-- [ ] 数据验证工具类
-- [ ] 加密解密工具类
-- [ ] Excel 导入导出工具类
-- [ ] PDF 生成工具类
-- [ ] 二维码生成工具类
+## 🤝 贡献
 
-## 贡献
+欢迎提交Issue和Pull Request来改进这个项目！
 
-欢迎提交 Issue 和 Pull Request 来完善这个项目。
+## 📄 许可证
 
-## 许可证
+MIT License
 
-MIT License 
+## 📞 联系方式
+
+如有问题，请通过以下方式联系：
+- 邮箱: li.gen334@iwhalecloud.com
+- GitHub: [你的GitHub用户名] 
