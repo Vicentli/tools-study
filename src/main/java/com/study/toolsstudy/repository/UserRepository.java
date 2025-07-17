@@ -1,19 +1,20 @@
 package com.study.toolsstudy.repository;
 
 import com.study.toolsstudy.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    
-    Optional<User> findByUsername(String username);
-    
-    Optional<User> findByEmail(String email);
-    
-    boolean existsByUsername(String username);
-    
-    boolean existsByEmail(String email);
+@Mapper
+public interface UserMapper {
+    User selectById(@Param("id") Long id);
+    User selectByUsername(@Param("username") String username);
+    User selectByEmail(@Param("email") String email);
+    int insertUser(User user);
+    int updateUser(User user);
+    int deleteById(@Param("id") Long id);
+    boolean existsByUsername(@Param("username") String username);
+    boolean existsByEmail(@Param("email") String email);
+    List<User> selectAll();
 } 
